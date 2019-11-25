@@ -9,6 +9,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
   static get properties() {
     return {
       player: {},
+      hass: {},
       shortcuts: {},
     };
   }
@@ -18,6 +19,24 @@ class MiniMediaPlayerShortcuts extends LitElement {
   }
 
   get list() {
+    let i;
+    // list of players
+    this.shortcuts.list = [];
+    const allEntities = Object.keys(this.hass.states);
+    for (i = 0; i < allEntities.length; i += 1) {
+      if (allEntities[i].startsWith('media_player.')) {
+        if (this.hass.states[allEntities[i]].entity_id !== '') {
+          const attr = this.hass.states[allEntities[i]].attributes;
+          this.shortcuts.list.push({
+            name: attr.friendly_name,
+            icon: 'mdi:speaker',
+            id: 'ais_cloud.send_audio_to_speaker',
+            type: 'service',
+            data: { media_player: this.hass.states[allEntities[i]].entity_id },
+          });
+        }
+      }
+    }
     return this.shortcuts.list;
   }
 

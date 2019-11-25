@@ -42,7 +42,8 @@ const PROGRESS_PROPS = ['media_duration', 'media_position', 'media_position_upda
 
 const BREAKPOINT = 390;
 
-const LABEL_SHORTCUT = 'Shortcuts...';
+// AIS dom
+const LABEL_SHORTCUT = 'Wyślij audio na głośnik';
 
 const MEDIA_INFO = [
   { attr: 'media_title' },

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
 
-import getLabel from '../utils/getLabel';
+// import getLabel from '../utils/getLabel';
 
 class MiniMediaPlayerTts extends LitElement {
   static get properties() {
@@ -11,7 +11,9 @@ class MiniMediaPlayerTts extends LitElement {
   }
 
   get label() {
-    return getLabel(this.hass, 'ui.card.media_player.text_to_speak', 'Say');
+    // return getLabel(this.hass, 'ui.card.media_player.text_to_speak', 'Play');
+    // AIS dom
+    return 'Odtwarzanie url / tekst';
   }
 
   get input() {
@@ -27,15 +29,29 @@ class MiniMediaPlayerTts extends LitElement {
       <paper-input id="tts-input" class='mmp-tts__input'
         no-label-float
         placeholder=${this.label}...
+        @keypress=${this.handleTts}
         @click=${e => e.stopPropagation()}>
       </paper-input>
-      <mmp-button class='mmp-tts__button' @click=${this.handleTts}>
-        <span>SEND</span>
-      </mmp-button>
+      <paper-icon-button class='mmp-tts__button' icon='mdi:play-outline' @click=${this.handleTts}>
+      </paper-icon-button>
     `;
   }
 
+  validURL(str) {
+    const pattern = new RegExp('^(https?:\\/\\/)?' // protocol
+      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
+      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
+      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
+      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
+      + '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    return !!pattern.test(str);
+  }
+
+
   handleTts(e) {
+    if (e.charCode !== 13) {
+      return true;
+    }
     const { config, message } = this;
     const opts = {
       message,
@@ -58,10 +74,16 @@ class MiniMediaPlayerTts extends LitElement {
       this.hass.callService('notify', opts.entity_id.split('.').slice(-1)[0], { message });
     else if (config.platform === 'ga')
       this.hass.callService('notify', 'ga_broadcast', { message });
+    else if (config.platform === 'ais')
+      if (this.validURL(message)) {
+        this.hass.callService('media_player', 'play_media', { entity_id: 'media_player.wbudowany_glosnik', media_content_id: 'music', media_content_type: 'music' });
+      } else {
+        this.hass.callService('ais_ai_service', 'say_it', { text: message });
+      }
     else
       this.hass.callService('tts', `${config.platform}_say`, opts);
     e.stopPropagation();
-    this.reset();
+    // this.reset();
   }
 
   reset() {

@@ -193,6 +193,7 @@ class MiniMediaPlayer extends LitElement {
             ` : ''}
             <mmp-shortcuts
               .player=${this.player}
+              .hass=${this.hass}
               .shortcuts=${config.shortcuts}>
             </mmp-shortcuts>
             ${config.tts ? html`
@@ -375,4 +376,4 @@ class MiniMediaPlayer extends LitElement {
   }
 }
 
-customElements.define('mini-media-player', MiniMediaPlayer);
+customElements.define('hui-ais-mini-media-player-card', MiniMediaPlayer);

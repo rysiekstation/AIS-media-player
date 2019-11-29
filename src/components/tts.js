@@ -29,7 +29,7 @@ class MiniMediaPlayerTts extends LitElement {
       <paper-input id="tts-input" class='mmp-tts__input'
         no-label-float
         placeholder=${this.label}...
-        @keypress=${this.handleTts}
+        @keypress=${this.handleTtsKeyPres}
         @click=${e => e.stopPropagation()}>
       </paper-input>
       <paper-icon-button class='mmp-tts__button' icon='mdi:play-outline' @click=${this.handleTts}>
@@ -47,11 +47,16 @@ class MiniMediaPlayerTts extends LitElement {
     return !!pattern.test(str);
   }
 
-
-  handleTts(e) {
+  handleTtsKeyPres(e) {
     if (e.charCode !== 13) {
+      e.stopPropagation();
       return true;
     }
+    this.handleTts(e);
+  }
+
+
+  handleTts(e) {
     const { config, message } = this;
     const opts = {
       message,

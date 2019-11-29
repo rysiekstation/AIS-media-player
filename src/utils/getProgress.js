@@ -7,5 +7,8 @@ export default (duration) => {
   minutes = (minutes < 10) ? `0${minutes}` : minutes;
   seconds = (seconds < 10) ? `0${seconds}` : seconds;
 
+  if (hours === '00' && minutes === '00' && seconds === '00') {
+    return '';
+  }
   return `${hours !== '00' ? `${hours}:` : ''}${minutes}:${seconds}`;
 };

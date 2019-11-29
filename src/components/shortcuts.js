@@ -37,6 +37,12 @@ class MiniMediaPlayerShortcuts extends LitElement {
         }
       }
     }
+    this.shortcuts.list.push({
+      name: 'Wyszukaj dostępne głośniki',
+      icon: 'mdi:sync',
+      id: 'ais_shell_command.scan_network_for_devices',
+      type: 'service',
+    });
     return this.shortcuts.list;
   }
 

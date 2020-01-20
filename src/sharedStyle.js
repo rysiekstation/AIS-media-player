@@ -9,12 +9,18 @@ const sharedStyle = css`
   .label {
     margin: 0 8px;
   }
+  ha-icon {
+    width: calc(var(--mmp-unit) * .6);
+    height: calc(var(--mmp-unit) * .6);
+  }
   paper-icon-button {
-    color: var(--mmp-text-color);
+    width: var(--mmp-unit);
+    height: var(--mmp-unit);
+    color: var(--mmp-text-color, var(--primary-text-color));
     transition: color .25s;
   }
   paper-icon-button[color] {
-    color: var(--mmp-accent-color) !important;
+    color: var(--mmp-accent-color, var(--accent-color)) !important;
     opacity: 1 !important;
   }
   paper-icon-button[inactive] {

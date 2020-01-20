@@ -18,10 +18,14 @@ class MiniMediaPlayerDropdown extends LitElement {
     return this.items.map(item => item.id).indexOf(this.selected);
   }
 
-  onChange(item) {
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: item,
-    }));
+  onChange(e) {
+    const id = e.target.selected;
+    if (id !== this.selectedId && this.items[id]) {
+      this.dispatchEvent(new CustomEvent('change', {
+        detail: this.items[id],
+      }));
+      e.target.selected = -1;
+    }
   }
 
   render() {
@@ -32,6 +36,7 @@ class MiniMediaPlayerDropdown extends LitElement {
         .horizontalAlign=${'right'}
         .verticalAlign=${'top'}
         .verticalOffset=${44}
+        .dynamicAlign=${true}
         @click=${e => e.stopPropagation()}>
         ${this.icon ? html`
           <paper-icon-button
@@ -49,11 +54,9 @@ class MiniMediaPlayerDropdown extends LitElement {
             </div>
           </mmp-button>
         `}
-        <paper-listbox slot="dropdown-content" selected=${this.selectedId}>
+        <paper-listbox slot="dropdown-content" .selected=${this.selectedId} @iron-select=${this.onChange}>
           ${this.items.map(item => html`
-            <paper-item
-              value=${item.id || item.name}
-              @click=${() => this.onChange(item)}>
+            <paper-item value=${item.id || item.name}>
               ${item.icon ? html`<iron-icon .icon=${item.icon}></iron-icon>` : ''}
               ${item.name ? html`<span class='mmp-dropdown__item__label'>${item.name}</span>` : ''}
             </paper-item>`)}
@@ -91,11 +94,11 @@ class MiniMediaPlayerDropdown extends LitElement {
           font-size: 1em;
           justify-content: space-between;
           align-items: center;
-          height: 36px;
+          height: calc(var(--mmp-unit) - 4px);
           margin: 2px 0;
         }
         .mmp-dropdown__button.icon {
-          height: 40px;
+          height: var(--mmp-unit);
           margin: 0;
         }
         .mmp-dropdown__button > div {
@@ -103,7 +106,7 @@ class MiniMediaPlayerDropdown extends LitElement {
           flex: 1;
           justify-content: space-between;
           align-items: center;
-          height: 36px;
+          height: calc(var(--mmp-unit) - 4px);
           max-width: 100%;
         }
         .mmp-dropdown__label {
@@ -111,9 +114,9 @@ class MiniMediaPlayerDropdown extends LitElement {
           text-transform: none;
         }
         .mmp-dropdown__icon {
-          height: 24px;
-          width: 24px;
-          min-width: 24px;
+          height: calc(var(--mmp-unit) * .6);
+          width: calc(var(--mmp-unit) * .6);
+          min-width: calc(var(--mmp-unit) * .6);
         }
         paper-item > *:nth-child(2) {
           margin-left: 4px;

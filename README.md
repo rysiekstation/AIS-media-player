@@ -21,7 +21,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.4.2
+    - url: /local/mini-media-player-bundle.js?v=1.5.2
       type: module
   ```
 
@@ -32,14 +32,14 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.4.2/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.5.2/mini-media-player-bundle.js
   ```
 
 3. Add a reference to `mini-media-player-bundle.js` inside your `ui-lovelace.yaml`.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.4.2
+    - url: /local/mini-media-player-bundle.js?v=1.5.2
       type: module
   ```
 
@@ -64,7 +64,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.4.2
+    - url: /local/mini-media-player-bundle.js?v=1.5.2
       type: module
   ```
 
@@ -81,7 +81,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 | entity | string | **required** | v0.1 | An entity_id from an entity within the `media_player` domain.
 | name | string | optional | v0.6 | Override the entities friendly name.
 | icon | string | optional | v0.1 | Specify a custom icon from any of the available mdi icons.
-| more_info | boolean | true | v0.1 | Enable the "more info" popup dialog when pressing on the card.
+| tap_action | [action object](#action-object-options) | true | v0.7.0 | Action on click/tap.
 | group | boolean | optional | v0.1 | Removes paddings, background color and box-shadow.
 | hide | object | optional | v1.0.0 | Manage visible UI elements, see [hide object](#hide-object) for available options.
 | artwork | string | default | v0.4 | `cover` to display current artwork in the card background, `full-cover` to display full artwork, `none` to hide artwork, `full-cover-fit` for full cover without cropping.
@@ -98,6 +98,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 | background | string | optional | v0.8.6 | Background image, specify the image url `"/local/background-img.png"` e.g.
 | speaker_group | object | optional | v1.0.0 | Speaker group management/multiroom, see [Speaker group object](#speaker-group-object) for available options.
 | shortcuts | object | optional | v1.0.0 | Media shortcuts in a list or as buttons, see [Shortcut object](#shortcuts-object) for available options.
+| scale | number | optional | v1.5.0 | UI scale modifier, default is `1`.
 
 #### Idle object
 | Name | Type | Default | Description |
@@ -180,11 +181,22 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 |------|------|---------|-------------|
 | name | string | optional | A display name.
 | icon | string | optional | A display icon *(any mdi icon)*.
+| image | string | optional | A display image.
 | type | string | **required** | Type of shortcut. A media type: `music`, `tvshow`, `video`, `episode`, `channel`, `playlist` e.g. or an action type: `source`, `sound_mode`, `script` or `service`.
 | id | string | **required** | The media identifier. The format of this is component dependent. For example, you can provide URLs to Sonos & Cast but only a playlist ID to iTunes & Spotify. A source/(sound mode) name can also be specified to change source/(sound mode), use together with type `source`/`sound_mode`. If type `script` specify the script name here or `service` specify the `<domain>.<service>`.
 | data | list | optional | Extra service payload<sup>[1](#shortcut_foot1)</sup>.
 
 <a name="shortcut_foot1"><sup>1</sup></a> Only compatible with `script` & `service` shortcuts, useful for sending variables to script.
+
+#### Action object options
+| Name | Type | Default | Options | Description |
+|------|:----:|:-------:|:-----------:|-------------|
+| action | string | `more-info` | `more-info` / `navigate` / `call-service`  / `url` / `none` | Action to perform.
+| entity | string |  | Any entity id | Override default entity of `more-info`, when  `action` is defined as `more-info`.
+| service | string |  | Any service | Service to call (e.g. `media_player.toggle`) when `action` is defined as `call-service`.
+| service_data | object |  | Any service data | Service data to include with the service call (e.g. `entity_id: media_player.office`).
+| navigation_path | string |  | Any path | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`.
+| url | string |  | Any URL | URL to open when `action` is defined as `url`.
 
 #### Hide object
 | Name | Type | Default | Description |
@@ -204,6 +216,7 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | runtime | boolean | true | The media runtime indicators.
 | artwork_border | boolean | true | The border of the `default` artwork picture.
 | power_state | boolean | true | Dynamic color of the power button to indicate on/off.
+| icon_state | boolean | true | Dynamic color of the entity icon to indicate entity state.
 | shuffle | boolean | true | The shuffle button (only for players with `shuffle_set` support).
 
 
@@ -221,9 +234,10 @@ Can be specified by color name, hexadecimal, rgb, rgba, hsl, hsla, basically any
 | mini-media-player-overlay-base-color | white | The color of base text, icons & buttons while artwork cover is present
 | mini-media-player-overlay-accent-color | white | The accent color of UI elements while artwork cover is present
 | mini-media-player-media-cover-info-color | white | Color of the media information text while artwork cover is present
-| mini-media-player-artwork-opacity | 1 | Opacity of cover artwork
+| mini-media-player-background-opacity | 1 | Opacity of the background
 | mini-media-player-artwork-opacity | 1 | Opacity of cover artwork
 | mini-media-player-progress-height | 6px | Progressbar height
+| mini-media-player-scale | 1 | Scale of the card
 
 
 ### Example usage
@@ -279,8 +293,20 @@ You can specify media shortcuts through the `shortcuts` option, either as a list
       - icon: mdi:dog
         type: script
         id: script.script_name
+      # Trigger custom service
+      - name: Crooners Playlist
+        type: service
+        id: spotcast.start
+        data:
+          entity_id: media_player.googlehome1234
+          uri: spotify:playlist:37i9dQZF1DX9XiAcF7t1s5
+          
       ... # etc.
 ```
+**Tip**:
+If you don't have Sonos, but want just a bit more control over playlists and so, a simple solution is to use the `type: service`-option, to trigger the`spotcast.start`-service.
+
+Remember to add the [required data](https://github.com/fondberg/spotcast#call-the-service), for spotcast to work. Also, kindly note that the [spotcast](https://github.com/fondberg/spotcast) custom component is required, for this to work. It's available in HACS.
 
 #### Grouped cards
 Set the `group` option to `true` when nesting mini media player cards inside other cards that already have margins/paddings.

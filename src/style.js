@@ -4,6 +4,8 @@ const style = css`
   :host {
     overflow: visible !important;
     display: block;
+    --mmp-scale: var(--mini-media-player-scale, 1);
+    --mmp-unit: calc(var(--mmp-scale) * 40px);
     --mmp-accent-color: var(--mini-media-player-accent-color, var(--accent-color, #f39c12));
     --mmp-base-color: var(--mini-media-player-base-color, var(--primary-text-color, #000));
     --mmp-overlay-color: var(--mini-media-player-overlay-color, rgba(0,0,0,0.5));
@@ -17,8 +19,10 @@ const style = css`
     --mmp-icon-color:
       var(--mini-media-player-icon-color,
         var(--mini-media-player-base-color,
-          var(--paper-item-icon-colo, #44739e)));
+          var(--paper-item-icon-color, #44739e)));
+    --mmp-icon-active-color: var(--paper-item-icon-active-color, --mmp-active-color);
     --mmp-info-opacity: 1;
+    --mmp-bg-opacity: var(--mini-media-player-background-opacity, 1);
     --mmp-artwork-opacity: var(--mini-media-player-artwork-opacity, 1);
     --mmp-progress-height: var(--mini-media-player-progress-height, 6px);
     --mdc-theme-primary: var(--mmp-text-color);
@@ -36,6 +40,7 @@ const style = css`
     --mmp-text-color-inverted: #000;
     --mmp-active-color: rgba(255,255,255,.5);
     --mmp-icon-color: var(--mmp-text-color);
+    --mmp-icon-active-color: var(--mmp-text-color);
     --mmp-info-opacity: .75;
     --paper-slider-container-color: var(--mini-media-player-overlay-color, rgba(255,255,255,.75));
     --mdc-theme-primary: var(--mmp-text-color);
@@ -48,10 +53,11 @@ const style = css`
     cursor: default;
     display: flex;
     background: transparent;
-    overflow: hidden;
+    overflow: visible;
     padding: 0;
     position: relative;
     color: inherit;
+    font-size: calc(var(--mmp-unit) * 0.35);
   }
   ha-card.--group {
     box-shadow: none;
@@ -60,10 +66,8 @@ const style = css`
   ha-card.--more-info {
     cursor: pointer;
   }
-  .mmp__bg, .mmp__player, .mmp__container {
+  .mmp__bg, .mmp-player, .mmp__container {
     border-radius: var(--ha-card-border-radius, 0);
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
   }
   .mmp__container {
     overflow: hidden;
@@ -103,6 +107,7 @@ const style = css`
     overflow: hidden;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    opacity: var(--mmp-bg-opacity);
   }
   ha-card[artwork*='cover'].--has-artwork .mmp__bg {
     opacity: var(--mmp-artwork-opacity);
@@ -125,6 +130,8 @@ const style = css`
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    border-radius: var(--ha-card-border-radius, 0);
+    overflow: hidden;
   }
   .cover:before {
     background: var(--mmp-overlay-color);
@@ -160,7 +167,7 @@ const style = css`
     will-change: padding;
   }
   ha-card.--group .mmp-player {
-    padding: 10px 0;
+    padding: 2px 0;
   }
   .flex {
     display: flex;
@@ -182,7 +189,7 @@ const style = css`
   }
   ha-card.--rtl .entity__info {
     margin-left: auto;
-    margin-right: 8px;
+    margin-right: calc(var(--mmp-unit) / 5);
   }
   ha-card[content='movie'] .attr__media_season,
   ha-card[content='movie'] .attr__media_episode {
@@ -191,17 +198,20 @@ const style = css`
   .entity__icon {
     color: var(--mmp-icon-color);
   }
+  .entity__icon[color] {
+    color: var(--mmp-icon-active-color);
+  }
   .entity__artwork, .entity__icon {
     animation: fade-in .25s ease-out;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 100%;
-    height: 40px;
-    width: 40px;
-    min-width: 40px;
-    line-height: 40px;
-    margin-right: 8px;
+    height: var(--mmp-unit);
+    width: var(--mmp-unit);
+    min-width: var(--mmp-unit);
+    line-height: var(--mmp-unit);
+    margin-right: calc(var(--mmp-unit) / 5);
     position: relative;
     text-align: center;
     will-change: border-color;
@@ -227,7 +237,7 @@ const style = css`
     white-space: nowrap;
   }
   .entity__info__name {
-    line-height: 20px;
+    line-height: calc(var(--mmp-unit) / 2);
     color: var(--mmp-text-color);
   }
   .entity__info__media {
@@ -238,7 +248,7 @@ const style = css`
     transition: color .5s;
   }
   .entity__info__media[short] {
-    max-height: 20px;
+    max-height: calc(var(--mmp-unit) / 2);
     overflow: hidden;
   }
   .attr__app_name {
@@ -254,7 +264,7 @@ const style = css`
     opacity: .5;
   }
   .entity__info__media[short-scroll] {
-    max-height: 20px;
+    max-height: calc(var(--mmp-unit) / 2);
     white-space: nowrap;
   }
   .entity__info__media[scroll] > span {
@@ -295,12 +305,12 @@ const style = css`
     display: none;
   }
   .mmp-player__adds {
-    margin-left: 48px;
+    margin-left: calc(var(--mmp-unit) * 1.2);
     position: relative;
   }
   ha-card.--rtl .mmp-player__adds {
     margin-left: auto;
-    margin-right: 48px;
+    margin-right: calc(var(--mmp-unit) * 1.2);
   }
   .mmp-player__adds > *:nth-child(2) {
     margin-top: 0px;
@@ -315,7 +325,6 @@ const style = css`
   }
   mmp-media-controls {
     flex-wrap: wrap;
-    justify-content: center;
   }
   ha-card.--flow mmp-powerstrip {
     justify-content: space-between;
@@ -352,7 +361,7 @@ const style = css`
     padding: 16px;
   }
   ha-card.--inactive.--group .mmp-player {
-    padding: 10px 0;
+    padding: 2px 0;
   }
   .mmp-player div:empty {
     display: none;

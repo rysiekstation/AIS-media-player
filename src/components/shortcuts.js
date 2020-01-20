@@ -83,6 +83,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
             @click=${e => this.handleShortcut(e, item)}>
             <div align=${this.shortcuts.align_text}>
               ${item.icon ? html`<iron-icon .icon=${item.icon}></iron-icon>` : ''}
+              ${item.image ? html`<img src=${item.image}>` : ''}
               ${item.name ? html`<span class="ellipsis">${item.name}</span>` : ''}
             </div>
           </mmp-button>`)}
@@ -131,6 +132,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
           justify-content: center;
           align-items: center;
           width: 100%;
+          padding: .2em 0;
         }
         .mmp-shortcuts__button > div[align='left'] {
           justify-content: flex-start;
@@ -154,11 +156,18 @@ class MiniMediaPlayerShortcuts extends LitElement {
           min-width: calc(16.66% - 8px);
         }
         .mmp-shortcuts__button > div > span {
-          line-height: 24px;
+          line-height: calc(var(--mmp-unit) * .6);
           text-transform: initial;
+        }
+        .mmp-shortcuts__button > div > iron-icon {
+          width: calc(var(--mmp-unit) * .6);
+          height: calc(var(--mmp-unit) * .6);
         }
         .mmp-shortcuts__button > div > *:nth-child(2) {
           margin-left: 4px;
+        }
+        .mmp-shortcuts__button > div > img {
+          height: 24px;
         }
       `,
     ];

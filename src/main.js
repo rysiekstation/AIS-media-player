@@ -1,8 +1,11 @@
 import { LitElement, html } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
+import { styleMap } from 'lit-html/directives/style-map';
 import ResizeObserver from 'resize-observer-polyfill';
 import MediaPlayerObject from './model';
 import style from './style';
+import sharedStyle from './sharedStyle';
+import handleClick from './utils/handleClick';
 
 import './components/groupList';
 import './components/dropdown';
@@ -56,7 +59,10 @@ class MiniMediaPlayer extends LitElement {
   }
 
   static get styles() {
-    return style;
+    return [
+      sharedStyle,
+      style,
+    ];
   }
 
   set hass(hass) {
@@ -99,6 +105,9 @@ class MiniMediaPlayer extends LitElement {
       source: 'default',
       sound_mode: 'default',
       toggle_power: true,
+      tap_action: {
+        action: 'more-info',
+      },
       ...config,
       hide: { ...DEFAULT_HIDE, ...config.hide },
       speaker_group: {
@@ -159,8 +168,9 @@ class MiniMediaPlayer extends LitElement {
 
     return html`
       <ha-card
-        @click=${this.handleMoreInfo}
         class=${this.computeClasses()}
+        style=${this.computeStyles()}
+        @click=${e => this.handlePopup(e)}
         artwork=${config.artwork}
         content=${this.player.content}>
         <div class='mmp__bg'>
@@ -234,6 +244,11 @@ class MiniMediaPlayer extends LitElement {
     return html`<div class='cover' style='background-image: ${url};'></div>`;
   }
 
+  handlePopup(e) {
+    e.stopPropagation();
+    handleClick(this, this._hass, this.config, this.config.tap_action, this.player.id);
+  }
+
   renderIcon(artwork) {
     if (this.config.hide.icon) return;
     if (this.player.active && artwork && this.config.artwork === 'default')
@@ -244,9 +259,10 @@ class MiniMediaPlayer extends LitElement {
           state=${this.player.state}>
         </div>`;
 
+    const state = !this.config.hide.icon_state && this.player.isActive;
     return html`
-      <div class='entity__icon'>
-        <ha-icon .icon=${this.computeIcon()}></ha-icon>
+      <div class='entity__icon' ?color=${state}>
+        <ha-icon .icon=${this.computeIcon()} ></ha-icon>
       </div>`;
   }
 
@@ -290,7 +306,7 @@ class MiniMediaPlayer extends LitElement {
       '--initial': this.initial,
       '--bg': config.background,
       '--group': config.group,
-      '--more-info': config.more_info,
+      '--more-info': config.tap_action !== 'none',
       '--has-artwork': this.player.hasArtwork && this.thumbnail,
       '--flow': config.flow,
       '--collapse': config.collapse,
@@ -298,6 +314,13 @@ class MiniMediaPlayer extends LitElement {
       '--progress': this.player.hasProgress,
       '--runtime': !config.hide.runtime && this.player.hasProgress,
       '--inactive': !this.player.isActive,
+    });
+  }
+
+  computeStyles() {
+    const { scale } = this.config;
+    return styleMap({
+      ...(scale && { '--mmp-unit': `${40 * scale}px` }),
     });
   }
 
@@ -341,11 +364,6 @@ class MiniMediaPlayer extends LitElement {
 
   toggleGroupList() {
     this.edit = !this.edit;
-  }
-
-  handleMoreInfo(e) {
-    e.stopPropagation();
-    if (this.config.more_info) this.fire('hass-more-info', { entityId: this.config.entity });
   }
 
   fire(type, inDetail, inOptions) {

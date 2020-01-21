@@ -32,7 +32,7 @@ class MiniMediaPlayerGroupList extends LitElement {
   render({ group, master, isMaster } = this) {
     return this.visible ? html`
       <div class='mmp-group-list' ?visible=${this.visible}>
-        <span class='mmp-group-list__title'>GRUPA</span>
+        <span class='mmp-group-list__title'>GRUPA GŁOŚNIKÓW</span>
         ${this.entities.map(item => html`
           <mmp-group-item
             @change=${this.handleGroupChange}
@@ -47,14 +47,14 @@ class MiniMediaPlayerGroupList extends LitElement {
             raised
             ?disabled=${group.length < 2}
             @click=${e => this.player.handleGroupChange(e, isMaster ? group : this.player.entity_id, false)}>
-            <span>${isMaster ? html`Ungroup` : html`Leave`}</span>
+            <span>${isMaster ? html`Rozgrupuj` : html`Opuść`}</span>
           </mmp-button>
           <mmp-button
             class='mmp-group-list__button'
             raised
             ?disabled=${!isMaster}
             @click=${e => this.player.handleGroupChange(e, this.entities.map(item => item.entity_id), true)}>
-            <span>Group all</span>
+            <span>Grupuj</span>
           </mmp-button>
         </div>
       </div>

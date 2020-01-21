@@ -87,7 +87,7 @@ export default class MediaPlayerObject {
   }
 
   get master() {
-    return this.group[0] || this.config.entity;
+    return this.config.entity;
   }
 
   get isMaster() {

@@ -76,6 +76,19 @@ class MiniMediaPlayer extends LitElement {
       this.idle = this.player.idle;
       if (this.player.trackIdle) this.updateIdleStatus();
     }
+    // ais
+    const allEntities = Object.keys(hass.states);
+    this.ais_speaker_group_entities = [];
+    let i;
+    for (i = 0; i < allEntities.length; i += 1) {
+      if (allEntities[i].startsWith('media_player.')) {
+        const attr = hass.states[allEntities[i]].attributes;
+        this.ais_speaker_group_entities.push({ entity_id: hass.states[allEntities[i]].entity_id, name: attr.friendly_name || 'Głośnik' });
+      }
+    }
+    this.config.speaker_group.show_group_count = true;
+    this.config.speaker_group.platform = 'ais_exo_player';
+    this.config.speaker_group.entities = this.ais_speaker_group_entities;
   }
 
   get hass() {

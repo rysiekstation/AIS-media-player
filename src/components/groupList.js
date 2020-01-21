@@ -32,7 +32,7 @@ class MiniMediaPlayerGroupList extends LitElement {
   render({ group, master, isMaster } = this) {
     return this.visible ? html`
       <div class='mmp-group-list' ?visible=${this.visible}>
-        <span class='mmp-group-list__title'>Group speakers</span>
+        <span class='mmp-group-list__title'>GRUPA</span>
         ${this.entities.map(item => html`
           <mmp-group-item
             @change=${this.handleGroupChange}

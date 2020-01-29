@@ -30,15 +30,15 @@ class MiniMediaPlayerShortcuts extends LitElement {
           this.shortcuts.list.push({
             name: attr.friendly_name,
             icon: 'mdi:speaker',
-            id: 'ais_cloud.send_audio_to_speaker',
+            id: 'ais_exo_player.redirect_media',
             type: 'service',
-            data: { media_player: this.hass.states[allEntities[i]].entity_id },
+            data: { entity_id: this.hass.states[allEntities[i]].entity_id },
           });
         }
       }
     }
     this.shortcuts.list.push({
-      name: 'Wyszukaj dostępne głośniki',
+      name: 'Wyszukaj dostępne odtwarzacze',
       icon: 'mdi:sync',
       id: 'ais_shell_command.scan_network_for_ais_players',
       type: 'service',

@@ -13,7 +13,7 @@ class MiniMediaPlayerTts extends LitElement {
   get label() {
     // return getLabel(this.hass, 'ui.card.media_player.text_to_speak', 'Play');
     // AIS dom
-    return 'Odtwarzanie url / tekst';
+    return 'Wyślij media lub tekst do odtwarzaczy';
   }
 
   get input() {
@@ -80,11 +80,7 @@ class MiniMediaPlayerTts extends LitElement {
     else if (config.platform === 'ga')
       this.hass.callService('notify', 'ga_broadcast', { message });
     else if (config.platform === 'ais')
-      if (this.validURL(message)) {
-        this.hass.callService('media_player', 'play_media', { entity_id: 'media_player.wbudowany_glosnik', media_content_id: 'music', media_content_type: 'music' });
-      } else {
-        this.hass.callService('ais_ai_service', 'say_it', { text: message });
-      }
+      this.hass.callService('ais_exo_player', 'play_text_or_url', { text: message });
     else
       this.hass.callService('tts', `${config.platform}_say`, opts);
     e.stopPropagation();

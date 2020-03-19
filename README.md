@@ -21,7 +21,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.5.2
+    - url: /local/mini-media-player-bundle.js?v=1.6.0
       type: module
   ```
 
@@ -32,14 +32,14 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.5.2/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.6.0/mini-media-player-bundle.js
   ```
 
 3. Add a reference to `mini-media-player-bundle.js` inside your `ui-lovelace.yaml`.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.5.2
+    - url: /local/mini-media-player-bundle.js?v=1.6.0
       type: module
   ```
 
@@ -64,7 +64,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.5.2
+    - url: /local/mini-media-player-bundle.js?v=1.6.0
       type: module
   ```
 
@@ -228,7 +228,8 @@ Can be specified by color name, hexadecimal, rgb, rgba, hsl, hsla, basically any
 |------|---------|-------------|
 | mini-media-player-base-color | var(--primary-text-color) & var(--paper-item-icon-color) | The color of base text & buttons
 | mini-media-player-accent-color | var(--accent-color) | The accent color of UI elements
-| mini-media-player-icon-color |  --mini-media-player-base-color, var(--paper-item-icon-color, #44739e) | The color for icons
+| mini-media-player-icon-color | --mini-media-player-base-color, var(--paper-item-icon-color, #44739e) | The color for icons
+| mini-media-player-button-color | rgba(255,255,255,0.25) | The background color of shortcut and group buttons.
 | mini-media-player-overlay-color | rgba(0,0,0,0.5) | The color of the background overlay
 | mini-media-player-overlay-color-stop | 25% | The gradient stop of the background overlay
 | mini-media-player-overlay-base-color | white | The color of base text, icons & buttons while artwork cover is present
@@ -238,6 +239,7 @@ Can be specified by color name, hexadecimal, rgb, rgba, hsl, hsla, basically any
 | mini-media-player-artwork-opacity | 1 | Opacity of cover artwork
 | mini-media-player-progress-height | 6px | Progressbar height
 | mini-media-player-scale | 1 | Scale of the card
+| mini-media-player-name-font-weight | 400 | Font weight of the entity name
 
 
 ### Example usage

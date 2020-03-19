@@ -21,9 +21,11 @@ class MiniMediaPlayerButton extends LitElement {
         min-width: 0;
         overflow: hidden;
         transition: background .5s;
+        border-radius: 4px;
+        font-weight: 500;
       }
       :host([raised]) {
-        background: rgba(255,255,255,0.25);
+        background: var(--mmp-button-color);
         min-height: calc(var(--mmp-unit) * .8);
         box-shadow:
           0px 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -37,6 +39,10 @@ class MiniMediaPlayerButton extends LitElement {
       }
       :host([faded]) {
         opacity: .75;
+      }
+      :host([disabled]) {
+        opacity: .25;
+        pointer-events: none;
       }
       .container {
         height: 100%;

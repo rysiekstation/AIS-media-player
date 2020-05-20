@@ -30,6 +30,20 @@ if (!customElements.get('ha-slider')) {
   );
 }
 
+if (!customElements.get('ha-icon-button')) {
+  customElements.define(
+    'ha-icon-button',
+    class extends customElements.get('paper-icon-button') {},
+  );
+}
+
+if (!customElements.get('ha-icon')) {
+  customElements.define(
+    'ha-icon',
+    class extends customElements.get('iron-icon') {},
+  );
+}
+
 class MiniMediaPlayer extends LitElement {
   constructor() {
     super();
@@ -223,7 +237,7 @@ class MiniMediaPlayer extends LitElement {
               <mmp-tts
                 .config=${config.tts}
                 .hass=${this.hass}
-                .entity=${this.player.id}>
+                .player=${this.player}>
               </mmp-tts>
             ` : ''}
             <mmp-group-list

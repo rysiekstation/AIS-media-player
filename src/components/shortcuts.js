@@ -82,7 +82,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
             class='mmp-shortcuts__button'
             @click=${e => this.handleShortcut(e, item)}>
             <div align=${this.shortcuts.align_text}>
-              ${item.icon ? html`<iron-icon .icon=${item.icon}></iron-icon>` : ''}
+              ${item.icon ? html`<ha-icon .icon=${item.icon}></ha-icon>` : ''}
               ${item.image ? html`<img src=${item.image}>` : ''}
               ${item.name ? html`<span class="ellipsis">${item.name}</span>` : ''}
             </div>
@@ -159,7 +159,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
           line-height: calc(var(--mmp-unit) * .6);
           text-transform: initial;
         }
-        .mmp-shortcuts__button > div > iron-icon {
+        .mmp-shortcuts__button > div > ha-icon {
           width: calc(var(--mmp-unit) * .6);
           height: calc(var(--mmp-unit) * .6);
         }

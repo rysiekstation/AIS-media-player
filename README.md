@@ -17,11 +17,11 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
 1. Download and copy `mini-media-player-bundle.js` from the [latest release](https://github.com/kalkih/mini-media-player/releases/latest) into your `config/www` directory.
 
-2. Add a reference to `mini-media-player-bundle.js` inside your `ui-lovelace.yaml`.
+2. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or in the Home Assistant UI from the resource tab.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.7.0
+    - url: /local/mini-media-player-bundle.js?v=1.8.1
       type: module
   ```
 
@@ -32,27 +32,15 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.7.0/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.8.1/mini-media-player-bundle.js
   ```
 
 3. Add a reference to `mini-media-player-bundle.js` inside your `ui-lovelace.yaml`.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.7.0
+    - url: /local/mini-media-player-bundle.js?v=1.8.1
       type: module
-  ```
-
-### *(Optional)* Add to custom updater
-
-1. Make sure you've the [custom_updater](https://github.com/custom-components/custom_updater) component installed and working.
-
-2. Add a new reference under `card_urls` in your `custom_updater` configuration in `configuration.yaml`.
-
-  ```yaml
-  custom_updater:
-    card_urls:
-      - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
   ```
 
 ## Updating
@@ -60,11 +48,11 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
 2. Replace the local file with the latest one attached in the [latest release](https://github.com/kalkih/mini-media-player/releases/latest).
 
-3. Add the new version number to the end of the cards reference url in your `ui-lovelace.yaml` like below.
+3. Add the new version number to the end of the cards reference url in your `configuration.yaml` or thourh the UI like below.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.7.0
+    - url: /local/mini-media-player-bundle.js?v=1.8.1
       type: module
   ```
 
@@ -113,7 +101,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 |------|------|---------|-------------|
 | platform | string | **required** | Specify [TTS platform](https://www.home-assistant.io/components/tts/), e.g. `google_translate` or `amazon_polly`, `alexa`<sup>[1](#tts_foot1)</sup> for ["Alexa as Media Player"](https://community.home-assistant.io/t/echo-devices-alexa-as-media-player-testers-needed/58639), `ga`<sup>[2](#tts_foot2)</sup><sup>[3](#tts_foot3)</sup> for use with [Google Assistant Webserver](https://community.home-assistant.io/t/community-hass-io-add-on-google-assistant-webserver-broadcast-messages-without-interrupting-music/37274) or [Assistant Relay](https://github.com/greghesp/assistant-relay), `sonos`<sup>[2](#tts_foot2)</sup> for use with modified [sonos_say script](https://github.com/kalkih/mini-media-player/issues/86#issuecomment-465541825), `webos`<sup>[4](#tts_foot4)</sup>.
 | language | string | optional | The output language.
-| entity_id | string/list | optional | The *entity_id* of the desired output entity or a list of *entity_id's*, can also be `all` to broadcast to all entities.
+| entity_id | string/list | optional | The *entity_id* of the desired output entity or a list of *entity_id's*, can also be `all` to broadcast to all entities or `group` to target currently grouped speakers.
 | volume | float | optional | Volume level of tts output (0 - 1), only supported by platform `sonos`.
 | type | string | optional | `tts`, `announce` or `push`, defaults to `tts`, only supported by platform `alexa`, more info [here](https://github.com/keatontaylor/alexa_media_player/wiki/Notification-Component#functionality).
 
@@ -210,6 +198,8 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | source | boolean | false | The source select.
 | sound_mode | boolean | true | The sound_mode select.
 | controls | boolean | false | The media playback controls.
+| prev | boolean | false | The "previous" playback control button.
+| next | boolean | false | The "next" playback control button.
 | play_pause | boolean | false | The play/pause button in media playback controls.
 | play_stop | boolean | true | The play/stop button in media playback controls.
 | volume | boolean | false | The volume controls.

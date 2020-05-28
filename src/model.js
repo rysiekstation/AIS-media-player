@@ -1,4 +1,4 @@
-import { PROGRESS_PROPS, MEDIA_INFO } from './const';
+import { PROGRESS_PROPS, MEDIA_INFO, PLATFORM } from './const';
 
 export default class MediaPlayerObject {
   constructor(hass, config, entity) {
@@ -82,8 +82,14 @@ export default class MediaPlayerObject {
   }
 
   get group() {
-    const groupName = `${this.config.speaker_group.platform}_group`;
-    return this.attr[groupName] || [];
+    if (this.platform === PLATFORM.SQUEEZEBOX) {
+      return this.attr.sync_group || [];
+    }
+    return this.attr[`${this.platform}_group`] || [];
+  }
+
+  get platform() {
+    return this.config.speaker_group.platform;
   }
 
   get master() {
@@ -186,12 +192,20 @@ export default class MediaPlayerObject {
     return !(typeof this.attr.is_volume_muted === 'undefined');
   }
 
-  getAttribute(attribute) {
-    return this.attr[attribute] || '';
+  get supportsVolumeSet() {
+    return !(typeof this.attr.volume_level === 'undefined');
+  }
+
+  get supportsMaster() {
+    return this.platform !== PLATFORM.SQUEEZEBOX;
   }
 
   get artwork() {
     return `url(${this.attr.entity_picture_local ? this.hass.hassUrl(this.picture) : this.picture})`;
+  }
+
+  getAttribute(attribute) {
+    return this.attr[attribute] || '';
   }
 
   toggle(e) {
@@ -256,11 +270,21 @@ export default class MediaPlayerObject {
   }
 
   volumeUp(e) {
-    this.callService(e, 'volume_up');
+    if (this.supportsVolumeSet && this.config.volume_step > 0) {
+      this.callService(e, 'volume_set', {
+        entity_id: this.config.entity,
+        volume_level: Math.min(this.vol + this.config.volume_step / 100, 1),
+      });
+    } else this.callService(e, 'volume_up');
   }
 
   volumeDown(e) {
-    this.callService(e, 'volume_down');
+    if (this.supportsVolumeSet && this.config.volume_step > 0) {
+      this.callService(e, 'volume_set', {
+        entity_id: this.config.entity,
+        volume_level: Math.max(this.vol - this.config.volume_step / 100, 0),
+      });
+    } else this.callService(e, 'volume_down');
   }
 
   seek(e, pos) {
@@ -292,26 +316,30 @@ export default class MediaPlayerObject {
   }
 
   handleGroupChange(e, entity, checked) {
-    const { platform } = this.config.speaker_group;
+    const { platform } = this;
     const options = { entity_id: entity };
     if (checked) {
       options.master = this.config.entity;
-      if (platform === 'bluesound') {
-        return this.callService(e, `${platform}_JOIN`, options);
+      switch (platform) {
+        case PLATFORM.SOUNDTOUCH:
+          return this.handleSoundtouch(e, this.isGrouped ? 'ADD_ZONE_SLAVE' : 'CREATE_ZONE', entity);
+        case PLATFORM.SQUEEZEBOX:
+          return this.callService(e, 'sync', {
+            entity_id: this.config.entity,
+            other_player: entity,
+          }, PLATFORM.SQUEEZEBOX);
+        default:
+          return this.callService(e, 'join', options, platform);
       }
-      if (platform === 'soundtouch') {
-        const service = this.isGrouped ? 'ADD_ZONE_SLAVE' : 'CREATE_ZONE';
-        return this.handleSoundtouch(e, service, entity);
-      }
-      this.callService(e, 'join', options, platform);
     } else {
-      if (platform === 'bluesound') {
-        return this.callService(e, `${platform}_UNJOIN`, options);
+      switch (platform) {
+        case PLATFORM.SOUNDTOUCH:
+          return this.handleSoundtouch(e, 'REMOVE_ZONE_SLAVE', entity);
+        case PLATFORM.SQUEEZEBOX:
+          return this.callService(e, 'unsync', options, PLATFORM.SQUEEZEBOX);
+        default:
+          return this.callService(e, 'unjoin', options, platform);
       }
-      if (platform === 'soundtouch') {
-        return this.handleSoundtouch(e, 'REMOVE_ZONE_SLAVE', entity);
-      }
-      this.callService(e, 'unjoin', options, platform);
     }
   }
 
@@ -319,7 +347,7 @@ export default class MediaPlayerObject {
     return this.callService(e, service, {
       master: this.master,
       slaves: entity,
-    }, 'soundtouch', true);
+    }, PLATFORM.SOUNDTOUCH, true);
   }
 
   toggleScript(e, id, data = {}) {

@@ -56,6 +56,12 @@ const MEDIA_INFO = [
   { attr: 'app_name' },
 ];
 
+const PLATFORM = {
+  SONOS: 'sonos',
+  SQUEEZEBOX: 'squeezebox',
+  BLUESOUND: 'bluesound',
+  SOUNDTOUCH: 'soundtouch',
+};
 
 export {
   DEFAULT_HIDE,
@@ -65,4 +71,5 @@ export {
   BREAKPOINT,
   LABEL_SHORTCUT,
   MEDIA_INFO,
+  PLATFORM,
 };

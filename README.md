@@ -17,11 +17,11 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
 1. Download and copy `mini-media-player-bundle.js` from the [latest release](https://github.com/kalkih/mini-media-player/releases/latest) into your `config/www` directory.
 
-2. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or in the Home Assistant UI from the resource tab.
+2. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or through the Home Assistant UI from the resource tab.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.8.1
+    - url: /local/mini-media-player-bundle.js?v=1.9.0
       type: module
   ```
 
@@ -32,14 +32,14 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.8.1/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.9.0/mini-media-player-bundle.js
   ```
 
-3. Add a reference to `mini-media-player-bundle.js` inside your `ui-lovelace.yaml`.
+3. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or through the Home Assistant UI from the resource tab.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.8.1
+    - url: /local/mini-media-player-bundle.js?v=1.9.0
       type: module
   ```
 
@@ -48,11 +48,11 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
 2. Replace the local file with the latest one attached in the [latest release](https://github.com/kalkih/mini-media-player/releases/latest).
 
-3. Add the new version number to the end of the cards reference url in your `configuration.yaml` or thourh the UI like below.
+3. Add the new version number to the end of the cards reference url in your `configuration.yaml` or through the Home Assistant.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.8.1
+    - url: /local/mini-media-player-bundle.js?v=1.9.0
       type: module
   ```
 
@@ -78,6 +78,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 | sound_mode | string | optional | v1.1.2 | Change sound mode select appearance, `icon` for just an icon, `full` for the full sound mode name.
 | info | string | optional | v1.0.0 | Change how the media information is displayed, `short` to limit media information to one row, `scroll` to scroll overflowing media info.
 | volume_stateless | boolean | false | v0.6 | Swap out the volume slider for volume up & down buttons.
+| volume_step | number | optional | v1.9.0 | Change the volume step size of volume buttons (number between 1 - 100)<sup>[1](#option_foot1)</sup>.
 | max_volume | number | optional | v0.8.2 | Specify the max vol limit of the volume slider (number between 1 - 100).
 | min_volume | number | optional | v1.1.2 | Specify the min vol limit of the volume slider (number between 1 - 100).
 | replace_mute | string | optional | v0.9.8 | Replace the mute button, available options are `play_pause` (previously `play`), `stop`, `play_stop`, `next`.
@@ -87,6 +88,8 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 | speaker_group | object | optional | v1.0.0 | Speaker group management/multiroom, see [Speaker group object](#speaker-group-object) for available options.
 | shortcuts | object | optional | v1.0.0 | Media shortcuts in a list or as buttons, see [Shortcut object](#shortcuts-object) for available options.
 | scale | number | optional | v1.5.0 | UI scale modifier, default is `1`.
+
+<a name="option_foot1"><sup>1</sup></a> Only supported on entities with `volume_level` attribute.
 
 #### Idle object
 | Name | Type | Default | Description |
@@ -127,21 +130,22 @@ See [Speaker group management](#speaker-group-management) for example usage.
 **Supported platforms**
 - sonos
 - soundtouch
-- yamaha_musiccast<sup>[1](#speaker_foot1)</sup>
+- squeezebox<sup>[2](#speaker_foot2)</sup>
 - bluesound<sup>[2](#speaker_foot2)</sup>
 - snapcast<sup>[2](#speaker_foot2)</sup>
+- yamaha_musiccast<sup>[1](#speaker_foot1)</sup>
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | entities | list | **required** | A list containing [speaker entities](#speaker-entity-object) of one of supported platforms, to enable group management of those speakers.
-| platform | string | 'sonos' | The media_player platform to control. `sonos`, `soundtouch`, `snapcast`, `bluesound` or `yamaha_musiccast`<sup>[1](#speaker_foot1)</sup>.
+| platform | string | 'sonos' | The media_player platform to control. `sonos`, `soundtouch`, `snapcast`, `bluesound`, `squeezebox` or `yamaha_musiccast`<sup>[1](#speaker_foot1)</sup>.
 | sync_volume | boolean | optional | Keep volume Synchronize between grouped speakers.
 | expanded | boolean | optional | Make the speaker group list expanded by default.
 | show_group_count | boolean | true | Have the number of grouped speakers displayed (if any) in the card name.
 | icon | string | optional | Override default group button icon *(any mdi icon)*.
 
 <a name="speaker_foot1"><sup>1</sup></a> Currently not yet supported in Home Assistant, *soon™*
-<a name="speaker_foot2"><sup>2</sup></a> Some features are not yet supported.
+<a name="speaker_foot2"><sup>2</sup></a> All features are not yet supported.
 
 #### Speaker entity object
 | Name | Type | Default | Description |
@@ -172,6 +176,7 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | name | string | optional | A display name.
 | icon | string | optional | A display icon *(any mdi icon)*.
 | image | string | optional | A display image.
+| cover | string | optional | A cover image (only supported for button shortcuts).
 | type | string | **required** | Type of shortcut. A media type: `music`, `tvshow`, `video`, `episode`, `channel`, `playlist` e.g. or an action type: `source`, `sound_mode`, `script` or `service`.
 | id | string | **required** | The media identifier. The format of this is component dependent. For example, you can provide URLs to Sonos & Cast but only a playlist ID to iTunes & Spotify. A source/(sound mode) name can also be specified to change source/(sound mode), use together with type `source`/`sound_mode`. If type `script` specify the script name here or `service` specify the `<domain>.<service>`.
 | data | list | optional | Extra service payload<sup>[1](#shortcut_foot1)</sup>.

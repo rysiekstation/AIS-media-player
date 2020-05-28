@@ -132,6 +132,7 @@ class MiniMediaPlayer extends LitElement {
       source: 'default',
       sound_mode: 'default',
       toggle_power: true,
+      volume_step: null,
       tap_action: {
         action: 'more-info',
       },

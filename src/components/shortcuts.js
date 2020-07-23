@@ -116,7 +116,7 @@ class MiniMediaPlayerShortcuts extends LitElement {
 
   shortcutStyle(item) {
     return {
-      'min-height': `${this.height}px;`,
+      'min-height': `${this.height}px`,
       ...(item.cover && { 'background-image': `url(${item.cover})` }),
     };
   }

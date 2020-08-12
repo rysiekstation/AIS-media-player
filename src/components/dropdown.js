@@ -36,7 +36,6 @@ class MiniMediaPlayerDropdown extends LitElement {
         .horizontalAlign=${'right'}
         .verticalAlign=${'top'}
         .verticalOffset=${44}
-        .dynamicAlign=${true}
         @click=${e => e.stopPropagation()}>
         ${this.icon ? html`
           <ha-icon-button
@@ -114,7 +113,7 @@ class MiniMediaPlayerDropdown extends LitElement {
           text-transform: none;
         }
         .mmp-dropdown__icon {
-          height: calc(var(--mmp-unit) * .6);
+          height: auto;
           width: calc(var(--mmp-unit) * .6);
           min-width: calc(var(--mmp-unit) * .6);
         }

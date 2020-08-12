@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 
+import t from '../utils/translation';
+
 import './groupItem';
 import './button';
 
@@ -7,6 +9,7 @@ import './button';
 class MiniMediaPlayerGroupList extends LitElement {
   static get properties() {
     return {
+      hass: {},
       entities: {},
       player: {},
       visible: Boolean,
@@ -40,24 +43,24 @@ class MiniMediaPlayerGroupList extends LitElement {
     const { id } = this.player;
     return html`
       <div class='mmp-group-list'>
-        <span class='mmp-group-list__title'>GRUPA ODTWARZACZY</span>
+        <span class='mmp-group-list__title'>${t(this.hass, 'title.speaker_management')}</span>
         ${this.entities.map(item => this.renderItem(item, id))}
         <div class='mmp-group-list__buttons'>
           <mmp-button raised ?disabled=${!isGrouped}
             @click=${e => this.player.handleGroupChange(e, id, false)}>
-            <span>Opuść</span>
+            <span>${t(this.hass, 'label.leave')}</span>
           </mmp-button>
           ${isGrouped && isMaster ? html`
             <mmp-button raised
               @click=${e => this.player.handleGroupChange(e, group, false)}>
-              <span>Rozgrupuj</span>
+              <span>${t(this.hass, 'label.ungroup')}</span>
             </mmp-button>
           ` : html``}
           <mmp-button raised ?disabled=${!isMaster}
             @click=${e => this.player.handleGroupChange(e, this.entities.map(item => item.entity_id), true)}>
             <span><svg style="width:24px;height:24px; vertical-align:middle;" viewBox="0 0 24 24">
                     <path fill="#fff" d="M19,19H5V5H15V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V11H19M7.91,10.08L6.5,11.5L11,16L21,6L19.59,4.58L11,13.17L7.91,10.08Z" />
-                  </svg> Wszystkie</span>
+                  </svg> ${t(this.hass, 'label.group_all')}</span>
           </mmp-button>
         </div>
       </div>

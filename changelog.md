@@ -1,3 +1,37 @@
+## v1.10.1
+### NEW
+- Add Polish translations (#370) @cyrosy
+- Add French translations (#371) @bieniu
+
+### FIXED
+- Fixed invalid text & icon colors when using artwork cover option (#372)
+- Fixed missing icon & broken default artwork #369 (#375)
+
+## v1.10.0
+### NEW
+- Smoothly fade in & crossfade between cover artwork (#339)
+- Add support for custom card specific translations #345 (#363)
+- New cover artwork display option (material) #333 (#331) @SBado w inspo from @zsarnett
+
+### FIXED
+- Misaligned dropdown icon #325 (#332)
+- Always expand dropdowns downwards #267 (#323)
+- Fetch artwork completely before displaying to prevent flickering #321 (#339)
+- Replace deprecated background theme variable #359 (#362) @agneevX
+- Fix progress bar overflow in Safari when round card corners #352 (#364)
+
+### DOCUMENTATION
+- Added Yamaha musiccast multiroom information (#353) @ppanagiotis
+- Added Linkplay multiroom platform information (#356) @nagyrobi
+
+🌐 Feel free to submit translations by adding strings in the [translations](https://github.com/kalkih/mini-media-player/blob/dev/src/translations.js) file & submitting the changes in a PR.
+
+
+## v1.9.1
+### FIXED
+- Fix broken shortcut column height #318 (#319)
+
+
 ## v1.9.0
 ### NEW
 - Squeezebox multiroom support (#312) **(BETA)**

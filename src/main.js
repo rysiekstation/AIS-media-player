@@ -169,6 +169,7 @@ class MiniMediaPlayer extends LitElement {
         artwork=${config.artwork}
         content=${this.player.content}>
         <div class='mmp__bg'>
+          ${this.renderBackground()}
           ${this.renderArtwork()}
           ${this.renderGradient()}
         </div>
@@ -247,18 +248,13 @@ class MiniMediaPlayer extends LitElement {
   }
 
   renderArtwork() {
-    if (!this.thumbnail && !this.config.background)
+    if (!this.thumbnail || this.config.artwork === 'default')
       return;
 
-    const url = this.config.background
-      && (!this.thumbnail || this.config.artwork === 'default')
-      ? `url(${this.config.background})`
-      : this.thumbnail;
-
     const artworkStyle = {
-      backgroundImage: url,
+      backgroundImage: this.thumbnail,
       backgroundColor: this.backgroundColor || '',
-      width: this.config.artwork === 'material' ? `${this.cardHeight}px` : '',
+      width: this.config.artwork === 'material' && this.player.isActive ? `${this.cardHeight}px` : '100%',
     };
     const artworkPrevStyle = {
       backgroundImage: this.prevThumbnail,
@@ -284,6 +280,14 @@ class MiniMediaPlayer extends LitElement {
     };
 
     return html`<div class="cover-gradient" style=${styleMap(gradientStyle)}></div>`;
+  }
+
+  renderBackground() {
+    if (!this.config.background) return;
+
+    return html`
+      <div class="cover --bg" style=${styleMap({ backgroundImage: `url(${this.config.background})` })}></div>
+    `;
   }
 
   handlePopup(e) {
@@ -373,7 +377,7 @@ class MiniMediaPlayer extends LitElement {
         }
         this.thumbnail = artwork;
       } catch (error) {
-        this.thumbnail = '';
+        this.thumbnail = `url(${picture})`;
       }
     }
     return !!(hasArtwork && this.thumbnail);

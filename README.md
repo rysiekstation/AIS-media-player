@@ -10,12 +10,6 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 ![Preview Image](https://user-images.githubusercontent.com/457678/47517460-9282d600-d888-11e8-9705-cf9ec3698c3c.png)
 
 
-Mini Media Player is being sponsored by the following tool; please help to support us by taking a look and signing up for a free trial.
-
-<a href="https://tracking.gitads.io/?repo=mini-media-player">
-  <img src="https://images.gitads.io/mini-media-player" alt="GitAds"/>
-</a>
-
 ## Install
 
 *This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store)*
@@ -28,7 +22,7 @@ Mini Media Player is being sponsored by the following tool; please help to suppo
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.10.1
+    - url: /local/mini-media-player-bundle.js?v=1.11.0
       type: module
   ```
 
@@ -39,14 +33,14 @@ Mini Media Player is being sponsored by the following tool; please help to suppo
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.10.1/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.11.0/mini-media-player-bundle.js
   ```
 
 3. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or through the Home Assistant UI from the resource tab.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.10.1
+    - url: /local/mini-media-player-bundle.js?v=1.11.0
       type: module
   ```
 
@@ -59,7 +53,7 @@ Mini Media Player is being sponsored by the following tool; please help to suppo
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.10.1
+    - url: /local/mini-media-player-bundle.js?v=1.11.0
       type: module
   ```
 
@@ -85,7 +79,7 @@ Mini Media Player is being sponsored by the following tool; please help to suppo
 | sound_mode | string | optional | v1.1.2 | Change sound mode select appearance, `icon` for just an icon, `full` for the full sound mode name.
 | info | string | optional | v1.0.0 | Change how the media information is displayed, `short` to limit media information to one row, `scroll` to scroll overflowing media info.
 | volume_stateless | boolean | false | v0.6 | Swap out the volume slider for volume up & down buttons.
-| volume_step | number | optional | v1.9.0 | Change the volume step size of volume buttons (number between 1 - 100)<sup>[1](#option_foot1)</sup>.
+| volume_step | number | optional | v1.9.0 | Change the volume step size of the volume buttons and the volume slider (number between 1 - 100)<sup>[1](#option_foot1)</sup>.
 | max_volume | number | optional | v0.8.2 | Specify the max vol limit of the volume slider (number between 1 - 100).
 | min_volume | number | optional | v1.1.2 | Specify the min vol limit of the volume slider (number between 1 - 100).
 | replace_mute | string | optional | v0.9.8 | Replace the mute button, available options are `play_pause` (previously `play`), `stop`, `play_stop`, `next`.
@@ -156,7 +150,7 @@ See [Speaker group management](#speaker-group-management) for example usage.
 
 <a name="speaker_foot2"><sup>2</sup></a> All features are not yet supported.
 
-<a name="speaker_foot3"><sup>3</sup></a> Requires [custom component](https://github.com/nagyrobi/home-assistant-custom-components-linkplay#multiroom) for sound devices based on Linkplay chipset.
+<a name="speaker_foot3"><sup>3</sup></a> Requires [custom component](https://github.com/nagyrobi/home-assistant-custom-components-linkplay#multiroom) for sound devices based on Linkplay chipset, available in HACS.
 
 #### Speaker entity object
 | Name | Type | Default | Description |
@@ -203,6 +197,7 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | service_data | object |  | Any service data | Service data to include with the service call (e.g. `entity_id: media_player.office`).
 | navigation_path | string |  | Any path | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`.
 | url | string |  | Any URL | URL to open when `action` is defined as `url`.
+| new_tab | boolean | `false` | `true` / `false` | Open URL in new tab when `action` is defined as `url`.
 
 #### Hide object
 | Name | Type | Default | Description |
@@ -219,6 +214,7 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | play_pause | boolean | false | The play/pause button in media playback controls.
 | play_stop | boolean | true | The play/stop button in media playback controls.
 | volume | boolean | false | The volume controls.
+| volume_level | boolean | true | The current volume level in percentage.
 | mute | boolean | false | The mute button.
 | progress | boolean | false | The progress bar.
 | runtime | boolean | true | The media runtime indicators.

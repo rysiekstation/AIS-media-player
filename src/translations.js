@@ -3,13 +3,14 @@
 const translations = {
   en: {
     placeholder: {
-      tts: 'Text to speak',
+      tts: 'Text to speech',
     },
     label: {
       leave: 'Leave',
       ungroup: 'Ungroup',
       group_all: 'Group all',
       send: 'Send',
+      master: 'Master',
     },
     state: {
       idle: 'Idle',
@@ -37,6 +38,25 @@ const translations = {
       speaker_management: 'Gestion des groupes',
     },
   },
+  hu: {
+    placeholder: {
+      tts: 'Szövegfelolvasás',
+    },
+    label: {
+      leave: 'Kilépés',
+      ungroup: 'Összes ki',
+      group_all: 'Összes be',
+      send: 'Küldés',
+      master: 'Forrás',
+    },
+    state: {
+      idle: 'Tétlen',
+      unavailable: 'Nem elérhető',
+    },
+    title: {
+      speaker_management: 'Hangszórók csoportosítása',
+    },
+  },
   pl: {
     placeholder: {
       tts: 'Wyślij media lub tekst do odtwarzaczy',
@@ -53,6 +73,25 @@ const translations = {
     },
     title: {
       speaker_management: 'Zarządzanie grupą',
+    },
+  },
+  uk: {
+    placeholder: {
+      tts: 'Текст для відтворення',
+    },
+    label: {
+      leave: 'Залишити',
+      ungroup: 'Розгрупувати',
+      group_all: 'Згрупувати всі',
+      send: 'Надіслати',
+      master: 'Головний',
+    },
+    state: {
+      idle: 'бездіяльність',
+      unavailable: 'недоступний',
+    },
+    title: {
+      speaker_management: 'Управління групою',
     },
   },
 };

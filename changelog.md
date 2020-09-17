@@ -1,3 +1,35 @@
+## v1.11.0
+### NEW
+- Ability to display volume level percentage #289 (#406)
+- New tap action option, open url in new tab #227 (#405)
+
+### FIXED
+- Fix disappearing background #393 (#402)
+
+### TRANSLATIONS
+- Added Ukrainian translations (#400) @denysdovhan
+- Improved Hungarian translations (#396) @nagyrobi
+
+
+## v1.10.2
+### NEW
+- Add support for slider volume steps #365 (#382)
+
+### FIXED
+- Prevent jumping artwork when transitioning artwork material #378 (#381)
+- Invisible default slider container color #387 (#390)
+- Artwork not clearing post playback #376 (#391)
+- Artwork url fallback if failing fetch of base64 image #385 (#392)
+
+### CHANGES
+- Minor changes to background & artwork transitions
+
+### TRANSLATIONS
+- Add Hungarian translations (#377) @nagyrobi
+- Update tts label string (#384) @agneevX
+- Translation support for master string (#380)
+
+
 ## v1.10.1
 ### NEW
 - Add Polish translations (#370) @cyrosy
@@ -6,6 +38,7 @@
 ### FIXED
 - Fixed invalid text & icon colors when using artwork cover option (#372)
 - Fixed missing icon & broken default artwork #369 (#375)
+
 
 ## v1.10.0
 ### NEW

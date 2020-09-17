@@ -45,7 +45,7 @@ const style = css`
     --mmp-icon-color: var(--mmp-text-color);
     --mmp-icon-active-color: var(--mmp-text-color);
     --mmp-info-opacity: 0.75;
-    --paper-slider-container-color: var(--mini-media-player-overlay-color, rgba(255,255,255,.75));
+    --paper-slider-container-color: var(--mini-media-player-overlay-color, rgba(255,255,255,.75)) !important;
     --mdc-theme-primary: var(--mmp-text-color);
     --mdc-theme-on-primary: var(--mmp-text-color);
     --paper-checkbox-unchecked-color: var(--mmp-text-color);
@@ -121,9 +121,6 @@ const style = css`
     opacity: var(--mmp-artwork-opacity);
     background: transparent;
   }
-  ha-card[artwork='material'].--has-artwork .mmp__bg {
-    display: flex;
-  }
   ha-card[artwork='material'].--has-artwork .cover {
     height: 100%;
     right: 0;
@@ -139,10 +136,19 @@ const style = css`
     right: 0;
     left: 0;
     opacity: 1;
-    transition: opacity 0.25s cubic-bezier(.21,.61,.35,1);
   }
   ha-card.--group .mmp__bg {
     background: transparent;
+  }
+  ha-card.--inactive .cover {
+    opacity: 0;
+  }
+  ha-card.--inactive .cover.--bg {
+    opacity: 1;
+  }
+  .cover-gradient {
+    transition: opacity .45s linear;
+    opacity: 0;
   }
   .cover,
   .cover:before {
@@ -150,7 +156,7 @@ const style = css`
     opacity: 0;
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
-    transition: opacity .75s cubic-bezier(.21,.61,.35,1);
+    transition: opacity .75s linear, width .05s cubic-bezier(.21,.61,.35,1);
     will-change: opacity;
   }
   .cover:before {
@@ -168,14 +174,16 @@ const style = css`
   .cover.--prev {
     animation: fade-in .5s linear reverse forwards;
   }
+  .cover.--bg {
+    opacity: 1;
+  }
   ha-card[artwork*='full-cover'].--has-artwork .mmp-player {
     background: linear-gradient(to top, var(--mmp-overlay-color) var(--mmp-overlay-color-stop), transparent 100%);
     border-bottom-left-radius: var(--ha-card-border-radius, 0);
     border-bottom-right-radius: var(--ha-card-border-radius, 0);
   }
   ha-card.--has-artwork .cover,
-  ha-card.--has-artwork[artwork='cover'] .cover:before,
-  ha-card.--bg .cover {
+  ha-card.--has-artwork[artwork='cover'] .cover:before {
     opacity: .999;
   }
   ha-card[artwork='default'] .cover {

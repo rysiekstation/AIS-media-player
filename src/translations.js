@@ -57,6 +57,25 @@ const translations = {
       speaker_management: 'Hangszórók csoportosítása',
     },
   },
+  no: {
+    placeholder: {
+      tts: 'Tekst til tale',
+    },
+    label: {
+      leave: 'Forlat',
+      ungroup: 'Oppløs gruppe',
+      group_all: 'Grupper alle',
+      send: 'Send',
+      master: 'Master',
+    },
+    state: {
+      idle: 'Inaktiv',
+      unavailable: 'Utilgjengelig',
+    },
+    title: {
+      speaker_management: 'Gruppestyring',
+    },
+  },
   pl: {
     placeholder: {
       tts: 'Wyślij media lub tekst do odtwarzaczy',
@@ -92,6 +111,25 @@ const translations = {
     },
     title: {
       speaker_management: 'Управління групою',
+    },
+  },
+  cz: {
+    placeholder: {
+      tts: 'Převeď text na řeč',
+    },
+    label: {
+      leave: 'Odejít',
+      ungroup: 'Zrušit seskupení',
+      group_all: 'Seskupit vše',
+      send: 'Poslat',
+      master: 'Master',
+    },
+    state: {
+      idle: 'Nečinný',
+      unavailable: 'Nedostupný',
+    },
+    title: {
+      speaker_management: 'Správa skupin',
     },
   },
 };

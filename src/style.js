@@ -50,6 +50,12 @@ const style = css`
     --mdc-theme-on-primary: var(--mmp-text-color);
     --paper-checkbox-unchecked-color: var(--mmp-text-color);
     --paper-checkbox-label-color: var(--mmp-text-color);
+    --switch-checked-color: var(--mmp-accent-color);
+    --switch-checked-button-color: var(--mmp-accent-color);
+    --switch-checked-track-color: var(--mmp-accent-color);
+    --switch-unchecked-color: var(--mmp-text-color);
+    --switch-unchecked-button-color: var(--mmp-text-color);
+    --switch-unchecked-track-color: var(--mmp-text-color);
     color: var(--mmp-text-color);
   }
   ha-card {
@@ -419,6 +425,16 @@ const style = css`
   @keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+  ha-switch {
+    padding: 16px 6px;
+  }
+  .side-by-side {
+    display: flex;
+  }
+  .side-by-side > * {
+    flex: 1;
+    padding-right: 4px;
   }
 `;
 

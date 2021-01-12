@@ -22,7 +22,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.11.0
+    - url: /local/mini-media-player-bundle.js?v=1.12.0
       type: module
   ```
 
@@ -33,14 +33,14 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 2. Grab `mini-media-player-bundle.js`
 
   ```console
-  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.11.0/mini-media-player-bundle.js
+  $ wget https://github.com/kalkih/mini-media-player/releases/download/v1.12.0/mini-media-player-bundle.js
   ```
 
 3. Add a reference to `mini-media-player-bundle.js` inside your `configuration.yaml` or through the Home Assistant UI from the resource tab.
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.11.0
+    - url: /local/mini-media-player-bundle.js?v=1.12.0
       type: module
   ```
 
@@ -53,7 +53,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 
   ```yaml
   resources:
-    - url: /local/mini-media-player-bundle.js?v=1.11.0
+    - url: /local/mini-media-player-bundle.js?v=1.12.0
       type: module
   ```
 
@@ -103,7 +103,7 @@ Inspired by [Custom UI: Mini media player](https://community.home-assistant.io/t
 #### TTS object
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| platform | string | **required** | Specify [TTS platform](https://www.home-assistant.io/components/tts/), e.g. `google_translate` or `amazon_polly`, `alexa`<sup>[1](#tts_foot1)</sup> for ["Alexa as Media Player"](https://community.home-assistant.io/t/echo-devices-alexa-as-media-player-testers-needed/58639), `ga`<sup>[2](#tts_foot2)</sup><sup>[3](#tts_foot3)</sup> for use with [Google Assistant Webserver](https://community.home-assistant.io/t/community-hass-io-add-on-google-assistant-webserver-broadcast-messages-without-interrupting-music/37274) or [Assistant Relay](https://github.com/greghesp/assistant-relay), `sonos`<sup>[2](#tts_foot2)</sup> for use with modified [sonos_say script](https://github.com/kalkih/mini-media-player/issues/86#issuecomment-465541825), `webos`<sup>[4](#tts_foot4)</sup>.
+| platform | string | **required** | Specify [TTS platform](https://www.home-assistant.io/components/tts/), e.g. `google_translate` or `amazon_polly`, `cloud` for Nabu Casa, `alexa`<sup>[1](#tts_foot1)</sup> for ["Alexa as Media Player"](https://community.home-assistant.io/t/echo-devices-alexa-as-media-player-testers-needed/58639), `ga`<sup>[2](#tts_foot2)</sup><sup>[3](#tts_foot3)</sup> for use with [Google Assistant Webserver](https://community.home-assistant.io/t/community-hass-io-add-on-google-assistant-webserver-broadcast-messages-without-interrupting-music/37274) or [Assistant Relay](https://github.com/greghesp/assistant-relay), `sonos`<sup>[2](#tts_foot2)</sup> for use with modified [sonos_say script](https://github.com/kalkih/mini-media-player/issues/86#issuecomment-465541825), `webos`<sup>[4](#tts_foot4)</sup>.
 | language | string | optional | The output language.
 | entity_id | string/list | optional | The *entity_id* of the desired output entity or a list of *entity_id's*, can also be `all` to broadcast to all entities or `group` to target currently grouped speakers.
 | volume | float | optional | Volume level of tts output (0 - 1), only supported by platform `sonos`.
@@ -145,6 +145,7 @@ See [Speaker group management](#speaker-group-management) for example usage.
 | expanded | boolean | optional | Make the speaker group list expanded by default.
 | show_group_count | boolean | true | Have the number of grouped speakers displayed (if any) in the card name.
 | icon | string | optional | Override default group button icon *(any mdi icon)*.
+| group_mgmt_entity | string | optional | Override the player entity for the group management (Useful if you use a universal media_player as your entity but still want to use the grouping feature)
 
 <a name="speaker_foot1"><sup>1</sup></a> Requires [custom component](https://github.com/ppanagiotis/pymusiccast), available in HACS.
 
@@ -222,6 +223,7 @@ See [card with media shortcuts](#card-with-media-shortcuts) for example usage.
 | power_state | boolean | true | Dynamic color of the power button to indicate on/off.
 | icon_state | boolean | true | Dynamic color of the entity icon to indicate entity state.
 | shuffle | boolean | true | The shuffle button (only for players with `shuffle_set` support).
+| state_label | boolean | false | State labels such as `Unavailable` & `Idle`.
 
 
 ### Theme variables
@@ -290,7 +292,7 @@ You can specify media shortcuts through the `shortcuts` option, either as a list
       # Start predefined playlist
       - icon: mdi:cat
         type: playlist
-        id: spotify:user:spotify:playlist:37i9dQZF1DZ06evO2O09Hg
+        id: spotify:user:XXXXXXX:playlist:37i9dQZF1DZ06evO2O09Hg # Where XXXXXXX is your User ID
       # Change the source to bathroom
       - icon: mdi:dog
         type: source
@@ -306,7 +308,7 @@ You can specify media shortcuts through the `shortcuts` option, either as a list
         data:
           entity_id: media_player.googlehome1234
           uri: spotify:playlist:37i9dQZF1DX9XiAcF7t1s5
-          
+
       ... # etc.
 ```
 **Tip**:

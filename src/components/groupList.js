@@ -73,6 +73,7 @@ class MiniMediaPlayerGroupList extends LitElement {
       <mmp-group-item
         @change=${this.handleGroupChange}
         .item=${item}
+        .hass=${this.hass}
         .checked=${itemId === id || this.group.includes(itemId)}
         .disabled=${itemId === id || !this.isMaster}
         .master=${itemId === this.master}

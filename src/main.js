@@ -26,6 +26,10 @@ import {
   BREAKPOINT,
 } from './const';
 
+import MiniMediaPlayerEditor from './editor';
+
+customElements.define('mini-media-player-editor', MiniMediaPlayerEditor);
+
 class MiniMediaPlayer extends LitElement {
   constructor() {
     super();
@@ -47,6 +51,8 @@ class MiniMediaPlayer extends LitElement {
       config: {},
       entity: {},
       player: {},
+      groupMgmtEntity: {},
+      groupMgmtPlayer: MediaPlayerObject,
       _overflow: Boolean,
       break: Boolean,
       initial: Boolean,
@@ -109,6 +115,10 @@ class MiniMediaPlayer extends LitElement {
 
   get name() {
     return this.config.name || this.player.name;
+  }
+
+  static getConfigElement() {
+    return window.document.createElement('mini-media-player-editor');
   }
 
   setConfig(config) {
@@ -214,7 +224,7 @@ class MiniMediaPlayer extends LitElement {
               .hass=${this.hass}
               .visible=${this.edit}
               .entities=${config.speaker_group.entities}
-              .player=${this.player}>
+              .player=${this.groupMgmtPlayer ? this.groupMgmtPlayer : this.player}>>
             </mmp-group-list>
           </div>
         </div>
@@ -343,7 +353,8 @@ class MiniMediaPlayer extends LitElement {
 
   speakerCount() {
     if (this.config.speaker_group.show_group_count) {
-      const count = this.player.groupCount;
+      const count = this.groupMgmtPlayer
+        ? this.groupMgmtPlayer.groupCount : this.player.groupCount;
       return count > 1 ? ` +${count - 1}` : '';
     }
   }
@@ -351,17 +362,16 @@ class MiniMediaPlayer extends LitElement {
   computeStyles() {
     const { scale } = this.config;
     return styleMap({
-      ...(
-        scale && { '--mmp-unit': `${40 * scale}px` },
-        (this.foregroundColor && this.player.isActive) && {
-          '--mmp-text-color': this.foregroundColor,
-          '--mmp-icon-color': this.foregroundColor,
-          '--mmp-icon-active-color': this.foregroundColor,
-          '--mmp-accent-color': this.foregroundColor,
-          '--paper-slider-container-color': this.foregroundColor,
-          '--secondary-text-color': this.foregroundColor,
-          '--mmp-media-cover-info-color': this.foregroundColor,
-        }
+      ...(scale && { '--mmp-unit': `${40 * scale}px` }),
+      ...((this.foregroundColor && this.player.isActive) && {
+        '--mmp-text-color': this.foregroundColor,
+        '--mmp-icon-color': this.foregroundColor,
+        '--mmp-icon-active-color': this.foregroundColor,
+        '--mmp-accent-color': this.foregroundColor,
+        '--paper-slider-container-color': this.foregroundColor,
+        '--secondary-text-color': this.foregroundColor,
+        '--mmp-media-cover-info-color': this.foregroundColor,
+      }
       ),
     });
   }
@@ -370,23 +380,16 @@ class MiniMediaPlayer extends LitElement {
     const { picture, hasArtwork } = this.player;
     if (hasArtwork && picture !== this.picture) {
       this.picture = picture;
-      try {
-        const artwork = await this.player.fetchArtwork();
-        if (this.thumbnail) {
-          this.prevThumbnail = this.thumbnail;
-        }
-        this.thumbnail = artwork;
-      } catch (error) {
-        this.thumbnail = `url(${picture})`;
+      const artwork = await this.player.fetchArtwork();
+      if (this.thumbnail) {
+        this.prevThumbnail = this.thumbnail;
       }
+      this.thumbnail = artwork || `url(${picture})`;
     }
-    return !!(hasArtwork && this.thumbnail);
   }
 
   computeIcon() {
-    return this.config.icon
-      ? this.config.icon : this.player.icon
-      || ICON.DEFAULT;
+    return this.config.icon ? this.player.icon : ICON.DEFAULT;
   }
 
   measureCard() {
@@ -459,3 +462,12 @@ class MiniMediaPlayer extends LitElement {
 }
 
 customElements.define('hui-ais-mini-media-player-card', MiniMediaPlayer);
+
+// Configures the preview in the Lovelace card picker
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'hui-ais-mini-media-player-card',
+  name: 'AIS Media Player',
+  preview: false,
+  description: 'AAIS Media Player Card',
+});

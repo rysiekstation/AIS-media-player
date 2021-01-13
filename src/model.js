@@ -231,12 +231,14 @@ export default class MediaPlayerObject {
   }
 
   toggle(e) {
-    if (this.config.toggle_power)
-      return this.callService(e, 'toggle');
-    if (this.isOff)
-      return this.callService(e, 'turn_on');
-    else
-      this.callService(e, 'turn_off');
+    // AIS
+    console.log("AIS media browser todo");
+    // if (this.config.toggle_power)
+    //   return this.callService(e, 'toggle');
+    // if (this.isOff)
+    //   return this.callService(e, 'turn_on');
+    // else
+    //   this.callService(e, 'turn_off');
   }
 
   toggleMute(e) {

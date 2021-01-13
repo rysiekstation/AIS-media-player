@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/main.js',
   mode: 'production',
   output: {
-    filename: 'dist/mini-media-player-bundle.js',
+    filename: '../AIS-home-assistant-polymer/src/panels/lovelace/cards/hui-ais-mini-media-player-card.js',
     path: path.resolve(__dirname),
     libraryTarget: 'umd',
   },

@@ -1,5 +1,8 @@
 const DEFAULT_HIDE = {
   shuffle: true,
+  power: false,
+  source: true,
+  toggle_power: false,
   power_state: true,
   artwork_border: true,
   icon_state: true,
@@ -15,7 +18,7 @@ const DEFAULT_HIDE = {
   state_label: false,
 };
 const ICON = {
-  DEFAULT: 'mdi:cast',
+  DEFAULT: 'mdi:speaker',
   DROPDOWN: 'mdi:chevron-down',
   GROUP: 'mdi:speaker-multiple',
   MENU: 'mdi:menu-down',
@@ -28,7 +31,7 @@ const ICON = {
     true: 'mdi:pause',
     false: 'mdi:play',
   },
-  POWER: 'mdi:power',
+  POWER: 'mdi:play-box-multiple',
   PREV: 'mdi:skip-previous',
   SEND: 'mdi:send',
   SHUFFLE: 'mdi:shuffle',
